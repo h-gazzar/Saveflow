@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String      @id @default(cuid())
+  supabaseId           String      @unique
+  email                String      @unique
+  plan                 String      @default("free")
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+  clients              Client[]
+  projects             Project[]
+  invoices             Invoice[]
+  leads                Lead[]
+  timeEntries          TimeEntry[]
+  createdAt            DateTime    @default(now())
+}
+
+model Client {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  email     String
+  company   String?
+  notes     String?
+  projects  Project[]
+  invoices  Invoice[]
+  createdAt DateTime  @default(now())
+}
+
+model Project {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  clientId      String
+  client        Client      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  status        String
+  deadline      DateTime?
+  paymentStatus String
+  timeEntries   TimeEntry[]
+  createdAt     DateTime    @default(now())
+}
+
+model Invoice {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  number    String
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  amount    Float
+  date      DateTime
+  status    String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, number])
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  company   String?
+  stage     String
+  value     Float?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model TimeEntry {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  hours     Float
+  rate      Float
+  createdAt DateTime @default(now())
+}
