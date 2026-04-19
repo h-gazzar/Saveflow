@@ -5,13 +5,13 @@
 :root {
   --black: #0a0a0a;
   --off-white: #f5f2ec;
-  --accent: #c8f73e;
-  --accent-dim: #a8d422;
+  --accent: #2f7a45;
+  --accent-dim: #245e35;
   --muted: #6e6b62;
   --border: rgba(255, 255, 255, 0.08);
   --card-bg: #111108;
-  --tag-bg: rgba(200, 247, 62, 0.1);
-  --tag-color: #c8f73e;
+  --tag-bg: rgba(47, 122, 69, 0.18);
+  --tag-color: #78c08a;
   --font-syne: "Syne", "Arial Black", sans-serif;
   --font-dm-mono: "DM Mono", "SFMono-Regular", monospace;
   --font-instrument-serif: "Instrument Serif", "Times New Roman", serif;
@@ -69,7 +69,7 @@ select {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(200, 247, 62, 0.04), transparent 52%);
+  background: linear-gradient(135deg, rgba(47, 122, 69, 0.08), transparent 52%);
   opacity: 0;
   transition: opacity 180ms ease;
   pointer-events: none;
@@ -82,6 +82,22 @@ select {
 
 .surface-card:hover::after {
   opacity: 1;
+}
+
+.modal-card {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--card-bg);
+  overflow: hidden;
+}
+
+.modal-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(47, 122, 69, 0.08), transparent 52%);
+  pointer-events: none;
 }
 
 .section-header {
@@ -137,7 +153,7 @@ select {
   width: 28rem;
   height: 28rem;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(200, 247, 62, 0.12), transparent 70%);
+  background: radial-gradient(circle, rgba(47, 122, 69, 0.16), transparent 70%);
   filter: blur(12px);
   pointer-events: none;
   z-index: 0;
@@ -175,7 +191,7 @@ select {
 .custom-cursor-ring {
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(200, 247, 62, 0.7);
+  border: 1px solid rgba(120, 192, 138, 0.7);
   mix-blend-mode: exclusion;
 }
 
@@ -194,8 +210,8 @@ select {
 .status-paid,
 .status-active,
 .status-won {
-  background: rgba(30, 190, 164, 0.16);
-  color: #83f5d7;
+  background: rgba(47, 122, 69, 0.2);
+  color: #8fd0a0;
 }
 
 .status-warning,
@@ -232,8 +248,8 @@ select {
 }
 
 .input-base:focus {
-  border-color: rgba(200, 247, 62, 0.6);
-  box-shadow: 0 0 0 3px rgba(200, 247, 62, 0.12);
+  border-color: rgba(120, 192, 138, 0.6);
+  box-shadow: 0 0 0 3px rgba(47, 122, 69, 0.18);
 }
 
 .btn-primary,
@@ -254,7 +270,7 @@ select {
 
 .btn-primary {
   background: var(--accent);
-  color: var(--black);
+  color: var(--off-white);
 }
 
 .btn-ghost {

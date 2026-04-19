@@ -48,9 +48,12 @@ export default async function DashboardPage() {
       </div>
       <div className="mt-8 grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
         <div className="surface-card p-6">
-          <div className="mb-5 flex items-center justify-between">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <h2 className="font-sans text-2xl font-extrabold uppercase">Savings goals</h2>
-            <Badge label={`${goals?.length ?? 0} active`} tone="neutral" />
+            <div className="flex items-center gap-3">
+              <GoalFormDialog triggerLabel="+ Add goal" />
+              <Badge label={`${goals?.length ?? 0} active`} tone="neutral" />
+            </div>
           </div>
           {goals?.length ? (
             <div className="space-y-4">
