@@ -1,22 +1,14 @@
 import { cn } from "~/lib/utils";
 
-const statusClassMap: Record<string, string> = {
-  paid: "status-paid",
+const tones: Record<string, string> = {
+  income: "status-paid",
+  expense: "status-unpaid",
   active: "status-active",
-  won: "status-won",
-  proposal: "status-proposal",
-  warning: "status-warning",
-  negotiation: "status-negotiation",
-  contacted: "status-contacted",
-  unpaid: "status-unpaid",
-  lost: "status-lost",
+  completed: "status-done",
   overdue: "status-overdue",
-  done: "status-done",
-  neutral: "status-neutral",
-  lead: "status-lead"
+  neutral: "status-neutral"
 };
 
 export function Badge({ label, tone }: { label: string; tone?: string }) {
-  const key = (tone ?? label).toLowerCase();
-  return <span className={cn("status-badge", statusClassMap[key] ?? "status-neutral")}>{label}</span>;
+  return <span className={cn("status-badge", tones[tone ?? label.toLowerCase()] ?? tones.neutral)}>{label}</span>;
 }

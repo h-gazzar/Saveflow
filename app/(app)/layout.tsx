@@ -1,13 +1,13 @@
 import { Sidebar } from "~/components/ui/Sidebar";
-import { requireUser } from "~/lib/auth";
+import { requireSupabaseUser } from "~/lib/supabase-server";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  await requireUser();
+  await requireSupabaseUser();
 
   return (
     <div className="min-h-screen bg-black">
       <Sidebar />
-      <main className="ml-[180px] min-h-screen p-6">{children}</main>
+      <main className="min-h-screen px-4 py-6 lg:ml-[220px] lg:p-6">{children}</main>
     </div>
   );
 }

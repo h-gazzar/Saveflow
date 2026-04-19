@@ -1,46 +1,111 @@
 import { Badge } from "~/components/ui/Badge";
-import { DataTable } from "~/components/ui/DataTable";
-import { MetricCard } from "~/components/ui/MetricCard";
+import { EmptyState } from "~/components/ui/EmptyState";
+import { GoalFormDialog } from "~/components/ui/GoalFormDialog";
 import { PageHeader } from "~/components/ui/PageHeader";
-import { requireUser } from "~/lib/auth";
-import { prisma } from "~/lib/prisma";
-import { formatCurrency } from "~/lib/utils";
+import { SummaryCard } from "~/components/ui/SummaryCard";
+import { TransactionFormDialog } from "~/components/ui/TransactionFormDialog";
+import { calculateBalance, formatCurrency, formatDate, getGoalProgress, getMonthlyTotals } from "~/lib/saveflow";
+import { requireSupabaseUser } from "~/lib/supabase-server";
+import type { Profile, SavingsGoal, Transaction } from "~/lib/types";
 
 export default async function DashboardPage() {
-  const user = await requireUser();
+  const { supabase, user } = await requireSupabaseUser();
 
-  const [projects, invoices, leads] = await Promise.all([
-    prisma.project.findMany({ where: { userId: user.id }, include: { client: true }, orderBy: { createdAt: "desc" }, take: 4 }),
-    prisma.invoice.findMany({ where: { userId: user.id }, include: { client: true }, orderBy: { createdAt: "desc" }, take: 4 }),
-    prisma.lead.count({ where: { userId: user.id } })
+  const [{ data: profile }, { data: goals }, { data: transactions }] = await Promise.all([
+    supabase.from("profiles").select("*").eq("id", user.id).single<Profile>(),
+    supabase.from("savings_goals").select("*").order("created_at", { ascending: false }).returns<SavingsGoal[]>(),
+    supabase
+      .from("transactions")
+      .select("*, savings_goals(id, title)")
+      .order("date", { ascending: false })
+      .limit(5)
+      .returns<Transaction[]>()
   ]);
 
-  const totalRevenue = invoices
-    .filter((invoice: (typeof invoices)[number]) => invoice.status.toLowerCase() === "paid")
-    .reduce((sum: number, invoice: (typeof invoices)[number]) => sum + invoice.amount, 0);
-  const unpaidTotal = invoices
-    .filter((invoice: (typeof invoices)[number]) => invoice.status.toLowerCase() !== "paid")
-    .reduce((sum: number, invoice: (typeof invoices)[number]) => sum + invoice.amount, 0);
-  const activeProjects = projects.filter((project: (typeof projects)[number]) => project.status.toLowerCase() === "active").length;
+  const currency = profile?.currency ?? "USD";
+  const allTransactions = (
+    await supabase.from("transactions").select("*").returns<Transaction[]>()
+  ).data ?? [];
+  const monthly = getMonthlyTotals(allTransactions);
+  const balance = calculateBalance(allTransactions);
 
   return (
     <div>
-      <PageHeader title="Dashboard" description="A focused overview of revenue, project momentum, and what still needs your attention." />
-      <div className="grid gap-4 xl:grid-cols-4">
-        <MetricCard label="Total revenue" value={formatCurrency(totalRevenue)} subtext="+18% this month" />
-        <MetricCard label="Active projects" value={String(activeProjects).padStart(2, "0")} subtext="Healthy delivery load" />
-        <MetricCard label="Unpaid invoices" value={formatCurrency(unpaidTotal)} subtext="Follow-up recommended" />
-        <MetricCard label="Leads in pipeline" value={String(leads).padStart(2, "0")} subtext="Opportunities in motion" />
+      <PageHeader
+        title="Dashboard"
+        description="A lightweight overview of your balance, monthly cash flow, goals in progress, and the latest money moves."
+        action={
+          <div className="flex flex-wrap gap-3">
+            <GoalFormDialog triggerLabel="New goal" />
+            <TransactionFormDialog goals={goals ?? []} triggerLabel="Quick add transaction" />
+          </div>
+        }
+      />
+      <div className="grid gap-4 xl:grid-cols-3">
+        <SummaryCard label="Total balance" value={formatCurrency(balance, currency)} hint="Income minus expenses" />
+        <SummaryCard label="Income this month" value={formatCurrency(monthly.income, currency)} hint="Current month inflows" />
+        <SummaryCard label="Expenses this month" value={formatCurrency(monthly.expenses, currency)} hint="Current month outflows" />
       </div>
-      <div className="mt-8 grid gap-5 xl:grid-cols-2">
-        <DataTable
-          headers={["Project", "Status"]}
-          rows={projects.map((project: (typeof projects)[number]) => [project.name, <Badge key={project.id} label={project.status} />])}
-        />
-        <DataTable
-          headers={["Invoice", "Amount", "Status"]}
-          rows={invoices.map((invoice: (typeof invoices)[number]) => [invoice.number, formatCurrency(invoice.amount), <Badge key={invoice.id} label={invoice.status} />])}
-        />
+      <div className="mt-8 grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
+        <div className="surface-card p-6">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="font-sans text-2xl font-extrabold uppercase">Savings goals</h2>
+            <Badge label={`${goals?.length ?? 0} active`} tone="neutral" />
+          </div>
+          {goals?.length ? (
+            <div className="space-y-4">
+              {goals.slice(0, 4).map((goal) => (
+                <div key={goal.id} className="rounded-sm border border-border p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="font-sans text-lg font-extrabold uppercase">{goal.title}</p>
+                      <p className="mt-1 text-sm text-muted">{goal.category}</p>
+                    </div>
+                    <p className="text-sm text-accent">{Math.round(getGoalProgress(goal) * 100)}%</p>
+                  </div>
+                  <div className="mt-4 h-3 rounded-full bg-white/[0.05]">
+                    <div className="h-3 rounded-full bg-accent" style={{ width: `${getGoalProgress(goal) * 100}%` }} />
+                  </div>
+                  <div className="mt-3 flex items-center justify-between text-sm text-muted">
+                    <span>{formatCurrency(goal.current_saved, currency)} saved</span>
+                    <span>{formatCurrency(goal.target_amount, currency)} target</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <EmptyState title="No active goals" description="Create a savings goal to start seeing progress cards and recommendations here." />
+          )}
+        </div>
+        <div className="surface-card p-6">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="font-sans text-2xl font-extrabold uppercase">Recent transactions</h2>
+            <Badge label={`${transactions?.length ?? 0} recent`} tone="neutral" />
+          </div>
+          {transactions?.length ? (
+            <div className="space-y-4">
+              {transactions.map((transaction) => (
+                <div key={transaction.id} className="rounded-sm border border-border p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Badge label={transaction.type} />
+                        <p className="text-sm text-muted">{transaction.category}</p>
+                      </div>
+                      <p className="mt-3 text-sm text-muted">{formatDate(transaction.date)}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-sans text-lg font-extrabold uppercase">{formatCurrency(transaction.amount, currency)}</p>
+                      <p className="mt-1 text-xs text-muted">{transaction.savings_goals?.title ?? "No linked goal"}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <EmptyState title="No transactions yet" description="Once you start tracking income and spending, your latest activity will appear here." />
+          )}
+        </div>
       </div>
     </div>
   );

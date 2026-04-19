@@ -8,19 +8,14 @@ export function NavBlur({ children }: { children: React.ReactNode }) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
+    const onScroll = () => setScrolled(window.scrollY > 16);
     window.addEventListener("scroll", onScroll);
+    onScroll();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
-    <div
-      className={cn(
-        "sticky top-0 z-40 transition-all duration-200",
-        scrolled && "border-b border-border bg-black/70 backdrop-blur-[20px]"
-      )}
-    >
+    <div className={cn("sticky top-0 z-40 transition-all duration-200", scrolled && "border-b border-border bg-black/70 backdrop-blur-[20px]")}>
       {children}
     </div>
   );

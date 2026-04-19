@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { DM_Mono, Instrument_Serif, Syne } from "next/font/google";
 
 import "~/app/globals.css";
-import { Providers } from "~/components/ui/Providers";
 import { CursorGlow } from "~/components/ui/CursorGlow";
+import { Providers } from "~/components/ui/Providers";
 import { RevealObserver } from "~/components/ui/RevealObserver";
 
 const syne = Syne({
@@ -26,17 +26,13 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "Soloflow",
-  description: "Freelancer CRM SaaS for clients, projects, invoices, leads, and time tracking."
+  title: "SaveFlow",
+  description: "Savings goals and expense tracking without complicated budgeting."
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      className={`${syne.variable} ${dmMono.variable} ${instrumentSerif.variable}`}
-      suppressHydrationWarning
-    >
+    <html lang="en" className={`${syne.variable} ${dmMono.variable} ${instrumentSerif.variable}`} suppressHydrationWarning>
       <body>
         <Providers>
           <CursorGlow />
