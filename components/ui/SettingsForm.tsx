@@ -6,11 +6,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
+import { currencyCodes } from "~/lib/saveflow";
 import type { Profile } from "~/lib/types";
 
 const schema = z.object({
   full_name: z.string().min(2),
-  currency: z.enum(["USD", "EUR", "GBP", "EGP"])
+  currency: z.enum(currencyCodes)
 });
 
 type SettingsValues = z.infer<typeof schema>;
@@ -56,10 +57,11 @@ export function SettingsForm({ profile }: { profile: Profile }) {
       <div>
         <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-muted">Currency</label>
         <select {...register("currency")} className="input-base">
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="GBP">GBP</option>
-          <option value="EGP">EGP</option>
+          {currencyCodes.map((currency) => (
+            <option key={currency} value={currency}>
+              {currency}
+            </option>
+          ))}
         </select>
       </div>
       {errors.root ? <p className="text-sm text-red-300">{errors.root.message}</p> : null}

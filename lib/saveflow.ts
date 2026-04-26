@@ -2,6 +2,7 @@ import { differenceInCalendarDays, endOfMonth, isPast, startOfMonth } from "date
 
 import type { CurrencyCode, SavingsGoal, Transaction, TransactionType } from "~/lib/types";
 
+export const currencyCodes = ["USD", "EUR", "GBP", "EGP"] as const;
 export const goalCategories = ["Emergency", "Travel", "Home", "Education", "Health", "Business", "Tech", "Other"] as const;
 export const transactionCategories = [
   "Salary",

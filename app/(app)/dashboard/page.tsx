@@ -1,4 +1,5 @@
 import { Badge } from "~/components/ui/Badge";
+import { CurrencySelector } from "~/components/ui/CurrencySelector";
 import { EmptyState } from "~/components/ui/EmptyState";
 import { GoalFormDialog } from "~/components/ui/GoalFormDialog";
 import { PageHeader } from "~/components/ui/PageHeader";
@@ -36,6 +37,7 @@ export default async function DashboardPage() {
         description="A lightweight overview of your balance, monthly cash flow, goals in progress, and the latest money moves."
         action={
           <div className="flex flex-wrap gap-3">
+            {profile ? <CurrencySelector profileId={profile.id} currency={currency} /> : null}
             <GoalFormDialog triggerLabel="New goal" />
             <TransactionFormDialog goals={goals ?? []} triggerLabel="Quick add transaction" />
           </div>

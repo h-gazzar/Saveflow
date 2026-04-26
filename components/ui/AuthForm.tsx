@@ -8,11 +8,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
+import { currencyCodes } from "~/lib/saveflow";
 
 const schema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
-  fullName: z.string().min(2).optional()
+  fullName: z.string().min(2).optional(),
+  currency: z.enum(currencyCodes).default("USD")
 });
 
 type AuthValues = z.infer<typeof schema>;
@@ -26,7 +28,10 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
     formState: { errors, isSubmitting },
     setError
   } = useForm<AuthValues>({
-    resolver: zodResolver(schema)
+    resolver: zodResolver(schema),
+    defaultValues: {
+      currency: "USD"
+    }
   });
 
   const onSubmit = handleSubmit(async (values) => {
@@ -36,13 +41,13 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
       if (mode === "signup") {
         const { data, error } = await supabase.auth.signUp({
-          email: values.email,
-          password: values.password,
-          options: {
-            data: { full_name: values.fullName ?? "" },
-            emailRedirectTo: `${window.location.origin}/dashboard`
-          }
-        });
+        email: values.email,
+        password: values.password,
+        options: {
+          data: { full_name: values.fullName ?? "", currency: values.currency },
+          emailRedirectTo: `${window.location.origin}/dashboard`
+        }
+      });
 
         if (error) {
           setError("root", { message: error.message });
@@ -87,6 +92,15 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
       </div>
       <form onSubmit={onSubmit} className="space-y-4">
         {mode === "signup" ? <input {...register("fullName")} placeholder="Full name" className="input-base" /> : null}
+        {mode === "signup" ? (
+          <select {...register("currency")} className="input-base">
+            {currencyCodes.map((currency) => (
+              <option key={currency} value={currency}>
+                {currency}
+              </option>
+            ))}
+          </select>
+        ) : null}
         <input {...register("email")} type="email" placeholder="Email" className="input-base" />
         {errors.email ? <p className="text-sm text-red-300">{errors.email.message}</p> : null}
         <input {...register("password")} type="password" placeholder="Password" className="input-base" />
