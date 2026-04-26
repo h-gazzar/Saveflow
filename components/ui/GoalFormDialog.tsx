@@ -54,6 +54,15 @@ export function GoalFormDialog({
 
   const onSubmit = handleSubmit(async (values) => {
     const supabase = createSupabaseBrowserClient();
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+
+    if (!goal && !user) {
+      setError("root", { message: "You need to be signed in to create a goal." });
+      return;
+    }
+
     const payload = {
       ...values,
       target_date: values.target_date || null,
@@ -62,7 +71,7 @@ export function GoalFormDialog({
 
     const query = goal
       ? supabase.from("savings_goals").update(payload).eq("id", goal.id)
-      : supabase.from("savings_goals").insert(payload);
+      : supabase.from("savings_goals").insert({ ...payload, user_id: user!.id });
 
     const { error } = await query;
     if (error) {

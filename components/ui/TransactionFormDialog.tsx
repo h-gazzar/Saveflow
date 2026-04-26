@@ -77,6 +77,15 @@ export function TransactionFormDialog({
 
   const onSubmit = handleSubmit(async (values) => {
     const supabase = createSupabaseBrowserClient();
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+
+    if (!transaction && !user) {
+      setError("root", { message: "You need to be signed in to add a transaction." });
+      return;
+    }
+
     const payload = {
       ...values,
       category: values.category === OTHER_CATEGORY ? values.custom_category!.trim() : values.category,
@@ -87,7 +96,7 @@ export function TransactionFormDialog({
 
     const query = transaction
       ? supabase.from("transactions").update(payload).eq("id", transaction.id)
-      : supabase.from("transactions").insert(payload);
+      : supabase.from("transactions").insert({ ...payload, user_id: user!.id });
 
     const { error } = await query;
     if (error) {
