@@ -25,7 +25,11 @@ export default async function DashboardPage() {
 
   const currency = profile?.currency ?? "USD";
   const allTransactions = (
-    await supabase.from("transactions").select("*").returns<Transaction[]>()
+    await supabase
+      .from("transactions")
+      .select("*, savings_goals(id, title)")
+      .order("date", { ascending: false })
+      .returns<Transaction[]>()
   ).data ?? [];
   const monthly = getMonthlyTotals(allTransactions);
   const balance = calculateBalance(allTransactions);
@@ -117,6 +121,40 @@ export default async function DashboardPage() {
             </div>
           )}
         </div>
+      </div>
+      <div className="mt-5 surface-card overflow-hidden">
+        <div className="border-b border-border px-5 py-4">
+          <h2 className="font-sans text-2xl font-extrabold uppercase">All income & expenses</h2>
+          <p className="mt-2 text-sm text-muted">A full table view of every logged transaction across income and expenses.</p>
+        </div>
+        {allTransactions.length ? (
+          <>
+            <div className="grid grid-cols-[0.85fr_0.85fr_1fr_0.9fr_1fr] border-b border-border bg-white/[0.02] px-5 py-3 text-xs uppercase tracking-[0.25em] text-muted">
+              <div>Type</div>
+              <div>Amount</div>
+              <div>Category</div>
+              <div>Date</div>
+              <div>Linked goal</div>
+            </div>
+            <div className="divide-y divide-border">
+              {allTransactions.map((transaction) => (
+                <div key={transaction.id} className="grid grid-cols-[0.85fr_0.85fr_1fr_0.9fr_1fr] items-center gap-4 px-5 py-4 text-sm">
+                  <div>
+                    <Badge label={transaction.type} />
+                  </div>
+                  <div>{formatCurrency(transaction.amount, currency)}</div>
+                  <div>{transaction.category}</div>
+                  <div>{formatDate(transaction.date)}</div>
+                  <div>{transaction.savings_goals?.title ?? "None"}</div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="p-6">
+            <EmptyState title="No transactions yet" description="Once you start tracking income and spending, your full activity table will appear here." />
+          </div>
+        )}
       </div>
     </div>
   );
