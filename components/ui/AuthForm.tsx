@@ -9,6 +9,7 @@ import { z } from "zod";
 
 import { BrandMark } from "~/components/ui/BrandMark";
 import { LoadingSpinner } from "~/components/ui/LoadingSpinner";
+import { appUrl } from "~/lib/app-url";
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
 import { currencyOptions, isSupportedCurrency } from "~/lib/saveflow";
 
@@ -47,7 +48,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         password: values.password,
         options: {
           data: { full_name: values.fullName ?? "", currency: values.currency },
-          emailRedirectTo: `${window.location.origin}/dashboard`
+          emailRedirectTo: `${appUrl}/dashboard`
         }
       });
 

@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { BrandMark } from "~/components/ui/BrandMark";
+import { appUrl } from "~/lib/app-url";
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
 
 const schema = z.object({
@@ -32,7 +33,7 @@ export function ForgotPasswordForm() {
       setSentMessage(null);
 
       const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
-        redirectTo: `${window.location.origin}/reset-password`
+        redirectTo: `${appUrl}/reset-password`
       });
 
       if (error) {

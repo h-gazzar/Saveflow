@@ -121,7 +121,7 @@ export default function MarketingPage() {
               <span className="h-3 w-3 rounded-full bg-amber-400/70" />
               <span className="h-3 w-3 rounded-full bg-emerald-400/70" />
             </div>
-            <div className="rounded-full border border-border px-4 py-2">app.saveflow.co/dashboard</div>
+            <div className="rounded-full border border-border px-4 py-2">saveflow-nine.vercel.app/dashboard</div>
           </div>
           <div className="grid gap-0 lg:grid-cols-[220px_1fr]">
             <aside className="border-r border-border bg-[#141510] p-5">

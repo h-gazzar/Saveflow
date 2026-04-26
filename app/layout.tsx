@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Mono, Instrument_Serif, Syne } from "next/font/google";
 
 import "~/app/globals.css";
+import { appUrl } from "~/lib/app-url";
 import { CursorGlow } from "~/components/ui/CursorGlow";
 import { Providers } from "~/components/ui/Providers";
 import { RevealObserver } from "~/components/ui/RevealObserver";
@@ -26,6 +27,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(appUrl),
   title: "SaveFlow",
   description: "Savings goals and expense tracking without complicated budgeting."
 };
