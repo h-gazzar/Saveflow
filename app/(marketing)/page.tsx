@@ -35,27 +35,27 @@ export default function MarketingPage() {
   return (
     <main>
       <NavBlur>
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5">
-          <Link href="/" className="font-sans text-2xl font-extrabold uppercase tracking-[0.18em]">
+        <nav className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
+          <Link href="/" className="font-sans text-xl font-extrabold uppercase tracking-[0.18em] sm:text-2xl">
             save<span className="text-accent">flow</span>
           </Link>
-          <div className="hidden items-center gap-8 font-sans text-sm font-bold uppercase tracking-[0.15em] text-muted md:flex">
+          <div className="hidden items-center gap-6 font-sans text-sm font-bold uppercase tracking-[0.15em] text-muted md:flex">
             <a href="#features">Features</a>
             <a href="#preview">Preview</a>
             <a href="#reports">Reports</a>
           </div>
-          <div className="flex gap-3">
-            <Link href="/login" className="btn-ghost">
+          <div className="flex w-full gap-3 sm:w-auto">
+            <Link href="/login" className="btn-ghost flex-1 sm:flex-none">
               Log in
             </Link>
-            <Link href="/signup" className="btn-primary">
+            <Link href="/signup" className="btn-primary flex-1 sm:flex-none">
               Start free
             </Link>
           </div>
         </nav>
       </NavBlur>
 
-      <section className="hero-grid relative overflow-hidden px-6 pb-20 pt-16">
+      <section className="hero-grid relative overflow-hidden px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16">
         <HeroGridHover />
         <div className="mx-auto w-full">
           <div className="mb-8 flex items-center justify-center gap-4 text-xs uppercase tracking-[0.25em] text-accent/90">
@@ -85,7 +85,7 @@ export default function MarketingPage() {
         </div>
       </section>
 
-      <section id="features" className="mx-auto max-w-7xl px-6 py-24">
+      <section id="features" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
         <div className="section-header reveal">
           <span>01</span>
           <h2>Core Features</h2>
@@ -110,7 +110,7 @@ export default function MarketingPage() {
         </div>
       </section>
 
-      <section id="preview" className="mx-auto max-w-7xl px-6 py-24">
+      <section id="preview" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
         <div className="section-header reveal">
           <span>02</span>
           <h2>Dashboard Preview</h2>
@@ -176,7 +176,7 @@ export default function MarketingPage() {
         </div>
       </section>
 
-      <section id="reports" className="mx-auto max-w-7xl px-6 py-24">
+      <section id="reports" className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
         <div className="section-header reveal">
           <span>03</span>
           <h2>Built For Focus</h2>
@@ -195,7 +195,7 @@ export default function MarketingPage() {
         </div>
       </section>
 
-      <section className="px-6 py-24">
+      <section className="px-4 py-16 sm:px-6 sm:py-24">
         <div className="surface-card mx-auto max-w-5xl p-10 text-center md:p-16">
           <h2 className="font-sans text-[clamp(2.6rem,6vw,5.2rem)] font-extrabold uppercase leading-[0.92]">
             Money tracking that feels <span className="font-serif italic normal-case text-accent">lighter</span>
@@ -210,7 +210,7 @@ export default function MarketingPage() {
         </div>
       </section>
 
-      <footer className="border-t border-border px-6 py-8">
+      <footer className="border-t border-border px-4 py-8 sm:px-6">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 text-sm text-muted lg:flex-row lg:items-center lg:justify-between">
           <Link href="/" className="font-sans text-2xl font-extrabold uppercase tracking-[0.18em] text-off-white">
             save<span className="text-accent">flow</span>

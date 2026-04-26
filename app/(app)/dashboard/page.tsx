@@ -52,10 +52,10 @@ export default async function DashboardPage() {
         <SummaryCard label="Expenses this month" value={formatCurrency(monthly.expenses, currency)} hint="Current month outflows" />
       </div>
       <div className="mt-8 grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
-        <div className="surface-card flex flex-col p-6">
+        <div className="surface-card flex flex-col p-4 sm:p-6">
           <div className="mb-5 space-y-4">
             <h2 className="font-sans text-2xl font-extrabold uppercase">Savings goals</h2>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <GoalFormDialog triggerLabel="+ Add goal" />
               <Badge label={`${goals?.length ?? 0} active`} tone="neutral" />
             </div>
@@ -87,10 +87,10 @@ export default async function DashboardPage() {
             </div>
           )}
         </div>
-        <div className="surface-card flex flex-col p-6">
+        <div className="surface-card flex flex-col p-4 sm:p-6">
           <div className="mb-5 space-y-4">
             <h2 className="font-sans text-2xl font-extrabold uppercase">Recent transactions</h2>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <TransactionFormDialog goals={goals ?? []} triggerLabel="+ Add transaction" />
               <Badge label={`${transactions?.length ?? 0} recent`} tone="neutral" />
             </div>
@@ -123,31 +123,59 @@ export default async function DashboardPage() {
         </div>
       </div>
       <div className="mt-5 surface-card overflow-hidden">
-        <div className="border-b border-border px-5 py-4">
+        <div className="border-b border-border px-4 py-4 sm:px-5">
           <h2 className="font-sans text-2xl font-extrabold uppercase">All income & expenses</h2>
           <p className="mt-2 text-sm text-muted">A full table view of every logged transaction across income and expenses.</p>
         </div>
         {allTransactions.length ? (
           <>
-            <div className="grid grid-cols-[0.85fr_0.85fr_1fr_0.9fr_1fr] border-b border-border bg-white/[0.02] px-5 py-3 text-xs uppercase tracking-[0.25em] text-muted">
-              <div>Type</div>
-              <div>Amount</div>
-              <div>Category</div>
-              <div>Date</div>
-              <div>Linked goal</div>
-            </div>
-            <div className="divide-y divide-border">
+            <div className="divide-y divide-border md:hidden">
               {allTransactions.map((transaction) => (
-                <div key={transaction.id} className="grid grid-cols-[0.85fr_0.85fr_1fr_0.9fr_1fr] items-center gap-4 px-5 py-4 text-sm">
-                  <div>
+                <div key={transaction.id} className="space-y-3 px-4 py-4 text-sm">
+                  <div className="flex items-start justify-between gap-3">
                     <Badge label={transaction.type} />
+                    <p className="font-sans text-lg font-extrabold uppercase">{formatCurrency(transaction.amount, currency)}</p>
                   </div>
-                  <div>{formatCurrency(transaction.amount, currency)}</div>
-                  <div>{transaction.category}</div>
-                  <div>{formatDate(transaction.date)}</div>
-                  <div>{transaction.savings_goals?.title ?? "None"}</div>
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted">Category</p>
+                      <p className="mt-2">{transaction.category}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted">Date</p>
+                      <p className="mt-2">{formatDate(transaction.date)}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.2em] text-muted">Linked goal</p>
+                      <p className="mt-2">{transaction.savings_goals?.title ?? "None"}</p>
+                    </div>
+                  </div>
                 </div>
               ))}
+            </div>
+            <div className="hidden overflow-x-auto md:block">
+              <div className="min-w-[680px]">
+                <div className="grid grid-cols-[0.85fr_0.85fr_1fr_0.9fr_1fr] border-b border-border bg-white/[0.02] px-5 py-3 text-xs uppercase tracking-[0.25em] text-muted">
+                  <div>Type</div>
+                  <div>Amount</div>
+                  <div>Category</div>
+                  <div>Date</div>
+                  <div>Linked goal</div>
+                </div>
+                <div className="divide-y divide-border">
+                  {allTransactions.map((transaction) => (
+                    <div key={transaction.id} className="grid grid-cols-[0.85fr_0.85fr_1fr_0.9fr_1fr] items-center gap-4 px-5 py-4 text-sm">
+                      <div>
+                        <Badge label={transaction.type} />
+                      </div>
+                      <div>{formatCurrency(transaction.amount, currency)}</div>
+                      <div>{transaction.category}</div>
+                      <div>{formatDate(transaction.date)}</div>
+                      <div>{transaction.savings_goals?.title ?? "None"}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </>
         ) : (

@@ -31,7 +31,7 @@ export function ReportsCharts({
     <div className="grid gap-5 xl:grid-cols-2">
       <div className="surface-card p-5">
         <h3 className="font-sans text-xl font-extrabold uppercase">Monthly spending</h3>
-        <div className="mt-6 h-80">
+        <div className="mt-6 h-64 sm:h-72 lg:h-80">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={monthlySpending}>
               <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />
@@ -45,7 +45,7 @@ export function ReportsCharts({
       </div>
       <div className="surface-card p-5">
         <h3 className="font-sans text-xl font-extrabold uppercase">Spending by category</h3>
-        <div className="mt-6 h-80">
+        <div className="mt-6 h-64 sm:h-72 lg:h-80">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie data={categoryBreakdown} dataKey="value" nameKey="name" innerRadius={72} outerRadius={108}>
@@ -61,7 +61,7 @@ export function ReportsCharts({
       </div>
       <div className="surface-card p-5 xl:col-span-2">
         <h3 className="font-sans text-xl font-extrabold uppercase">Income vs expenses</h3>
-        <div className="mt-6 h-80">
+        <div className="mt-6 h-64 sm:h-72 lg:h-80">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={incomeVsExpenses}>
               <CartesianGrid stroke="rgba(255,255,255,0.08)" vertical={false} />

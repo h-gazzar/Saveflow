@@ -85,33 +85,75 @@ export function TransactionsManager({
         </select>
       </div>
       <div className="surface-card overflow-hidden">
-        <div className="grid grid-cols-[1.1fr_0.7fr_0.9fr_0.9fr_1.1fr_0.7fr] border-b border-border bg-white/[0.02] px-5 py-3 text-xs uppercase tracking-[0.25em] text-muted">
-          <div>Type</div>
-          <div>Amount</div>
-          <div>Category</div>
-          <div>Date</div>
-          <div>Linked goal</div>
-          <div />
-        </div>
-        <div className="divide-y divide-border">
+        <div className="divide-y divide-border md:hidden">
           {filtered.map((transaction) => (
-            <div key={transaction.id} className="grid grid-cols-[1.1fr_0.7fr_0.9fr_0.9fr_1.1fr_0.7fr] items-center gap-4 px-5 py-4 text-sm">
-              <div className="space-y-1">
-                <Badge label={transaction.type} />
-                {transaction.note ? <p className="text-xs text-muted">{transaction.note}</p> : null}
+            <div key={transaction.id} className="space-y-4 px-4 py-4 text-sm">
+              <div className="flex items-start justify-between gap-3">
+                <div className="space-y-2">
+                  <Badge label={transaction.type} />
+                  <p className="font-sans text-lg font-extrabold uppercase">{formatCurrency(transaction.amount, currency)}</p>
+                </div>
+                <div className="flex gap-2">
+                  <TransactionFormDialog transaction={transaction} goals={goals} triggerLabel="Edit" />
+                  <button className="btn-ghost px-3" onClick={() => void removeTransaction(transaction.id)}>
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
               </div>
-              <div>{formatCurrency(transaction.amount, currency)}</div>
-              <div>{transaction.category}</div>
-              <div>{formatDate(transaction.date)}</div>
-              <div>{transaction.savings_goals?.title ?? "None"}</div>
-              <div className="flex justify-end gap-2">
-                <TransactionFormDialog transaction={transaction} goals={goals} triggerLabel="Edit" />
-                <button className="btn-ghost px-3" onClick={() => void removeTransaction(transaction.id)}>
-                  <Trash2 className="h-4 w-4" />
-                </button>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted">Category</p>
+                  <p className="mt-2">{transaction.category}</p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted">Date</p>
+                  <p className="mt-2">{formatDate(transaction.date)}</p>
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-muted">Linked goal</p>
+                  <p className="mt-2">{transaction.savings_goals?.title ?? "None"}</p>
+                </div>
+                {transaction.note ? (
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-muted">Note</p>
+                    <p className="mt-2 text-muted">{transaction.note}</p>
+                  </div>
+                ) : null}
               </div>
             </div>
           ))}
+        </div>
+        <div className="hidden overflow-x-auto md:block">
+          <div className="min-w-[760px]">
+            <div className="grid grid-cols-[1.1fr_0.7fr_0.9fr_0.9fr_1.1fr_0.7fr] border-b border-border bg-white/[0.02] px-5 py-3 text-xs uppercase tracking-[0.25em] text-muted">
+              <div>Type</div>
+              <div>Amount</div>
+              <div>Category</div>
+              <div>Date</div>
+              <div>Linked goal</div>
+              <div />
+            </div>
+            <div className="divide-y divide-border">
+              {filtered.map((transaction) => (
+                <div key={transaction.id} className="grid grid-cols-[1.1fr_0.7fr_0.9fr_0.9fr_1.1fr_0.7fr] items-center gap-4 px-5 py-4 text-sm">
+                  <div className="space-y-1">
+                    <Badge label={transaction.type} />
+                    {transaction.note ? <p className="text-xs text-muted">{transaction.note}</p> : null}
+                  </div>
+                  <div>{formatCurrency(transaction.amount, currency)}</div>
+                  <div>{transaction.category}</div>
+                  <div>{formatDate(transaction.date)}</div>
+                  <div>{transaction.savings_goals?.title ?? "None"}</div>
+                  <div className="flex justify-end gap-2">
+                    <TransactionFormDialog transaction={transaction} goals={goals} triggerLabel="Edit" />
+                    <button className="btn-ghost px-3" onClick={() => void removeTransaction(transaction.id)}>
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

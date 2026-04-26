@@ -7,7 +7,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="min-h-screen bg-black">
       <Sidebar />
-      <main className="min-h-screen px-4 py-6 lg:ml-[220px] lg:p-6">{children}</main>
+      <main className="min-h-screen px-4 pb-24 pt-6 md:px-5 lg:ml-[220px] lg:p-6">{children}</main>
     </div>
   );
 }
