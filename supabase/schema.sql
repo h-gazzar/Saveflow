@@ -21,7 +21,7 @@ create table if not exists public.profiles (
 
 create table if not exists public.savings_goals (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users(id) on delete cascade,
+  user_id uuid not null default auth.uid() references auth.users(id) on delete cascade,
   title text not null,
   target_amount numeric(12, 2) not null check (target_amount > 0),
   current_saved numeric(12, 2) not null default 0 check (current_saved >= 0),
@@ -34,7 +34,7 @@ create table if not exists public.savings_goals (
 
 create table if not exists public.transactions (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users(id) on delete cascade,
+  user_id uuid not null default auth.uid() references auth.users(id) on delete cascade,
   type text not null check (type in ('income', 'expense')),
   amount numeric(12, 2) not null check (amount > 0),
   category text not null,
