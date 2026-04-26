@@ -48,8 +48,8 @@ export default async function DashboardPage() {
         <SummaryCard label="Expenses this month" value={formatCurrency(monthly.expenses, currency)} hint="Current month outflows" />
       </div>
       <div className="mt-8 grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
-        <div className="surface-card p-6">
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="surface-card flex flex-col p-6">
+          <div className="mb-5 space-y-4">
             <h2 className="font-sans text-2xl font-extrabold uppercase">Savings goals</h2>
             <div className="flex items-center gap-3">
               <GoalFormDialog triggerLabel="+ Add goal" />
@@ -78,11 +78,13 @@ export default async function DashboardPage() {
               ))}
             </div>
           ) : (
-            <EmptyState title="No active goals" description="Create a savings goal to start seeing progress cards and recommendations here." />
+            <div className="flex flex-1 items-center">
+              <EmptyState title="No active goals" description="Create a savings goal to start seeing progress cards and recommendations here." />
+            </div>
           )}
         </div>
-        <div className="surface-card p-6">
-          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+        <div className="surface-card flex flex-col p-6">
+          <div className="mb-5 space-y-4">
             <h2 className="font-sans text-2xl font-extrabold uppercase">Recent transactions</h2>
             <div className="flex items-center gap-3">
               <TransactionFormDialog goals={goals ?? []} triggerLabel="+ Add transaction" />
@@ -110,7 +112,9 @@ export default async function DashboardPage() {
               ))}
             </div>
           ) : (
-            <EmptyState title="No transactions yet" description="Once you start tracking income and spending, your latest activity will appear here." />
+            <div className="flex flex-1 items-center">
+              <EmptyState title="No transactions yet" description="Once you start tracking income and spending, your latest activity will appear here." />
+            </div>
           )}
         </div>
       </div>
