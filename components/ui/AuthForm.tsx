@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -18,6 +19,7 @@ type AuthValues = z.infer<typeof schema>;
 
 export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const router = useRouter();
+  const [signupNotice, setSignupNotice] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -29,9 +31,10 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
   const onSubmit = handleSubmit(async (values) => {
     const supabase = createSupabaseBrowserClient();
+    setSignupNotice(null);
 
     if (mode === "signup") {
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
         options: {
@@ -42,6 +45,11 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
       if (error) {
         setError("root", { message: error.message });
+        return;
+      }
+
+      if (!data.session) {
+        setSignupNotice("Account created. Check your email to confirm your address, then log in.");
         return;
       }
     } else {
@@ -70,6 +78,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         <p className="mt-3 text-sm text-muted">
           {mode === "login" ? "Pick up where your saving plan left off." : "Start tracking spending and funding goals in one clean workspace."}
         </p>
+        {signupNotice ? <p className="mt-4 text-sm text-accent">{signupNotice}</p> : null}
       </div>
       <form onSubmit={onSubmit} className="space-y-4">
         {mode === "signup" ? <input {...register("fullName")} placeholder="Full name" className="input-base" /> : null}
@@ -77,6 +86,13 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         {errors.email ? <p className="text-sm text-red-300">{errors.email.message}</p> : null}
         <input {...register("password")} type="password" placeholder="Password" className="input-base" />
         {errors.password ? <p className="text-sm text-red-300">{errors.password.message}</p> : null}
+        {mode === "login" ? (
+          <p className="text-right text-sm text-muted">
+            <Link href="/forgot-password" className="text-accent">
+              Forgot password?
+            </Link>
+          </p>
+        ) : null}
         {errors.root ? <p className="text-sm text-red-300">{errors.root.message}</p> : null}
         <button type="submit" className="btn-primary w-full" disabled={isSubmitting}>
           {isSubmitting ? "Working..." : mode === "login" ? "Log in" : "Create account"}

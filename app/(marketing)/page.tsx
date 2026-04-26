@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, BarChart3, CircleDollarSign, PiggyBank, Wallet } from "lucide-react";
 
+import { HeroGridHover } from "~/components/ui/HeroGridHover";
 import { NavBlur } from "~/components/ui/NavBlur";
 
 const features = [
@@ -55,6 +56,7 @@ export default function MarketingPage() {
       </NavBlur>
 
       <section className="hero-grid relative overflow-hidden px-6 pb-20 pt-16">
+        <HeroGridHover />
         <div className="mx-auto w-full">
           <div className="mb-8 flex items-center justify-center gap-4 text-xs uppercase tracking-[0.25em] text-accent/90">
             <span className="h-px w-16 bg-accent" />
