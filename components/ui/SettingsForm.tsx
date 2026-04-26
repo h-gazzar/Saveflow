@@ -6,12 +6,12 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
-import { currencyCodes } from "~/lib/saveflow";
+import { currencyOptions, isSupportedCurrency } from "~/lib/saveflow";
 import type { Profile } from "~/lib/types";
 
 const schema = z.object({
   full_name: z.string().min(2),
-  currency: z.enum(currencyCodes)
+  currency: z.string().refine(isSupportedCurrency, "Choose a valid currency.")
 });
 
 type SettingsValues = z.infer<typeof schema>;
@@ -57,9 +57,9 @@ export function SettingsForm({ profile }: { profile: Profile }) {
       <div>
         <label className="mb-2 block text-xs uppercase tracking-[0.2em] text-muted">Currency</label>
         <select {...register("currency")} className="input-base">
-          {currencyCodes.map((currency) => (
-            <option key={currency} value={currency}>
-              {currency}
+          {currencyOptions.map((currency) => (
+            <option key={currency.code} value={currency.code}>
+              {currency.label}
             </option>
           ))}
         </select>

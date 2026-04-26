@@ -1,4 +1,4 @@
-export type CurrencyCode = "USD" | "EUR" | "GBP" | "EGP";
+export type CurrencyCode = string;
 
 export type Profile = {
   id: string;

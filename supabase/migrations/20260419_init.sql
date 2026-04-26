@@ -14,7 +14,7 @@ create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   email text,
   full_name text,
-  currency text not null default 'USD' check (currency in ('USD', 'EUR', 'GBP', 'EGP')),
+  currency text not null default 'USD' check (currency ~ '^[A-Z]{3}$'),
   created_at timestamptz not null default timezone('utc', now()),
   updated_at timestamptz not null default timezone('utc', now())
 );
@@ -62,7 +62,7 @@ begin
     new.email,
     coalesce(new.raw_user_meta_data ->> 'full_name', ''),
     case
-      when selected_currency in ('USD', 'EUR', 'GBP', 'EGP') then selected_currency
+      when selected_currency ~ '^[A-Z]{3}$' then selected_currency
       else 'USD'
     end
   )

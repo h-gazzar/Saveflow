@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
-import { currencyCodes } from "~/lib/saveflow";
+import { currencyOptions } from "~/lib/saveflow";
 import type { CurrencyCode } from "~/lib/types";
 
 export function CurrencySelector({
@@ -35,9 +35,9 @@ export function CurrencySelector({
           router.refresh();
         }}
       >
-        {currencyCodes.map((code) => (
-          <option key={code} value={code}>
-            {code}
+        {currencyOptions.map((currency) => (
+          <option key={currency.code} value={currency.code}>
+            {currency.label}
           </option>
         ))}
       </select>

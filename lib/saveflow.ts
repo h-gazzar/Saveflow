@@ -2,7 +2,27 @@ import { differenceInCalendarDays, endOfMonth, isPast, startOfMonth } from "date
 
 import type { CurrencyCode, SavingsGoal, Transaction, TransactionType } from "~/lib/types";
 
-export const currencyCodes = ["USD", "EUR", "GBP", "EGP"] as const;
+const fallbackCurrencyCodes = ["USD", "EUR", "GBP", "EGP"] as const;
+
+export const currencyCodes = typeof Intl.supportedValuesOf === "function"
+  ? [...Intl.supportedValuesOf("currency")].sort()
+  : [...fallbackCurrencyCodes];
+
+const currencyDisplayNames = typeof Intl.DisplayNames === "function"
+  ? new Intl.DisplayNames(["en"], { type: "currency" })
+  : null;
+
+export const currencyOptions = currencyCodes.map((code) => ({
+  code,
+  label: currencyDisplayNames?.of(code) ? `${code} - ${currencyDisplayNames.of(code)}` : code
+}));
+
+const currencyCodeSet = new Set(currencyCodes);
+
+export function isSupportedCurrency(value: string): value is CurrencyCode {
+  return currencyCodeSet.has(value);
+}
+
 export const goalCategories = ["Emergency", "Travel", "Home", "Education", "Health", "Business", "Tech", "Other"] as const;
 export const transactionCategories = [
   "Salary",

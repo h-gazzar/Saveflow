@@ -15,7 +15,7 @@ begin
     new.email,
     coalesce(new.raw_user_meta_data ->> 'full_name', ''),
     case
-      when selected_currency in ('USD', 'EUR', 'GBP', 'EGP') then selected_currency
+      when selected_currency ~ '^[A-Z]{3}$' then selected_currency
       else 'USD'
     end
   )

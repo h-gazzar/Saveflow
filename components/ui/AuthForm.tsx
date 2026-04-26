@@ -8,13 +8,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
-import { currencyCodes } from "~/lib/saveflow";
+import { currencyOptions, isSupportedCurrency } from "~/lib/saveflow";
 
 const schema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
   fullName: z.string().min(2).optional(),
-  currency: z.enum(currencyCodes).default("USD")
+  currency: z.string().refine(isSupportedCurrency, "Choose a valid currency.")
 });
 
 type AuthValues = z.infer<typeof schema>;
@@ -94,9 +94,9 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         {mode === "signup" ? <input {...register("fullName")} placeholder="Full name" className="input-base" /> : null}
         {mode === "signup" ? (
           <select {...register("currency")} className="input-base">
-            {currencyCodes.map((currency) => (
-              <option key={currency} value={currency}>
-                {currency}
+            {currencyOptions.map((currency) => (
+              <option key={currency.code} value={currency.code}>
+                {currency.label}
               </option>
             ))}
           </select>
