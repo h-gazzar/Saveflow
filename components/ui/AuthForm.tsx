@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { LoadingSpinner } from "~/components/ui/LoadingSpinner";
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
 import { currencyOptions, isSupportedCurrency } from "~/lib/saveflow";
 
@@ -114,7 +115,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         ) : null}
         {errors.root ? <p className="text-sm text-red-300">{errors.root.message}</p> : null}
         <button type="submit" className="btn-primary w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Working..." : mode === "login" ? "Log in" : "Create account"}
+          {isSubmitting ? <LoadingSpinner label="Working..." /> : mode === "login" ? "Log in" : "Create account"}
         </button>
       </form>
       <p className="mt-6 text-center text-sm text-muted">

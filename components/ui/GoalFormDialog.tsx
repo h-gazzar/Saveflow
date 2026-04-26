@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { LoadingSpinner } from "~/components/ui/LoadingSpinner";
 import { goalCategories } from "~/lib/saveflow";
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
 import type { SavingsGoal } from "~/lib/types";
@@ -98,7 +99,7 @@ export function GoalFormDialog({
         {errors.root ? <p className="text-sm text-red-300">{errors.root.message}</p> : null}
         <div className="flex justify-end">
           <button type="submit" className="btn-primary" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : goal ? "Update goal" : "Create goal"}
+            {isSubmitting ? <LoadingSpinner label="Saving..." /> : goal ? "Update goal" : "Create goal"}
           </button>
         </div>
       </form>

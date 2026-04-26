@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { LoadingSpinner } from "~/components/ui/LoadingSpinner";
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
 import { currencyOptions } from "~/lib/saveflow";
 import type { CurrencyCode } from "~/lib/types";
@@ -20,6 +21,7 @@ export function CurrencySelector({
   return (
     <label className="flex items-center gap-3">
       <span className="text-xs uppercase tracking-[0.2em] text-muted">Currency</span>
+      {isSaving ? <LoadingSpinner className="text-accent" /> : null}
       <select
         className="input-base w-auto min-w-[92px] py-3"
         value={currency}

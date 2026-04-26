@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { LoadingSpinner } from "~/components/ui/LoadingSpinner";
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
 import { currencyOptions, isSupportedCurrency } from "~/lib/saveflow";
 import type { Profile } from "~/lib/types";
@@ -68,7 +69,7 @@ export function SettingsForm({ profile }: { profile: Profile }) {
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted">Currency setting is functional. Deeper localization can be expanded later.</p>
         <button className="btn-primary" disabled={isSubmitting}>
-          {isSubmitting ? "Saving..." : "Save changes"}
+          {isSubmitting ? <LoadingSpinner label="Saving..." /> : "Save changes"}
         </button>
       </div>
     </form>

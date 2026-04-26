@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { LoadingSpinner } from "~/components/ui/LoadingSpinner";
 import { Modal } from "~/components/ui/Modal";
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
 import { transactionCategories } from "~/lib/saveflow";
@@ -166,7 +167,7 @@ export function TransactionFormDialog({
         {errors.root ? <p className="text-sm text-red-300">{errors.root.message}</p> : null}
         <div className="flex justify-end">
           <button type="submit" className="btn-primary" disabled={isSubmitting}>
-            {isSubmitting ? "Saving..." : transaction ? "Update transaction" : "Add transaction"}
+            {isSubmitting ? <LoadingSpinner label="Saving..." /> : transaction ? "Update transaction" : "Add transaction"}
           </button>
         </div>
       </form>

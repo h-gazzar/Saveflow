@@ -39,7 +39,6 @@ export default async function DashboardPage() {
           <div className="flex flex-wrap gap-3">
             {profile ? <CurrencySelector profileId={profile.id} currency={currency} /> : null}
             <GoalFormDialog triggerLabel="New goal" />
-            <TransactionFormDialog goals={goals ?? []} triggerLabel="Quick add transaction" />
           </div>
         }
       />
@@ -83,9 +82,12 @@ export default async function DashboardPage() {
           )}
         </div>
         <div className="surface-card p-6">
-          <div className="mb-5 flex items-center justify-between">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <h2 className="font-sans text-2xl font-extrabold uppercase">Recent transactions</h2>
-            <Badge label={`${transactions?.length ?? 0} recent`} tone="neutral" />
+            <div className="flex items-center gap-3">
+              <TransactionFormDialog goals={goals ?? []} triggerLabel="+ Add transaction" />
+              <Badge label={`${transactions?.length ?? 0} recent`} tone="neutral" />
+            </div>
           </div>
           {transactions?.length ? (
             <div className="space-y-4">
