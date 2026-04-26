@@ -30,42 +30,47 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   });
 
   const onSubmit = handleSubmit(async (values) => {
-    const supabase = createSupabaseBrowserClient();
-    setSignupNotice(null);
+    try {
+      const supabase = createSupabaseBrowserClient();
+      setSignupNotice(null);
 
-    if (mode === "signup") {
-      const { data, error } = await supabase.auth.signUp({
-        email: values.email,
-        password: values.password,
-        options: {
-          data: { full_name: values.fullName ?? "" },
-          emailRedirectTo: `${window.location.origin}/dashboard`
+      if (mode === "signup") {
+        const { data, error } = await supabase.auth.signUp({
+          email: values.email,
+          password: values.password,
+          options: {
+            data: { full_name: values.fullName ?? "" },
+            emailRedirectTo: `${window.location.origin}/dashboard`
+          }
+        });
+
+        if (error) {
+          setError("root", { message: error.message });
+          return;
         }
-      });
 
-      if (error) {
-        setError("root", { message: error.message });
-        return;
+        if (!data.session) {
+          setSignupNotice("Account created. Check your email to confirm your address, then log in.");
+          return;
+        }
+      } else {
+        const { error } = await supabase.auth.signInWithPassword({
+          email: values.email,
+          password: values.password
+        });
+
+        if (error) {
+          setError("root", { message: error.message });
+          return;
+        }
       }
 
-      if (!data.session) {
-        setSignupNotice("Account created. Check your email to confirm your address, then log in.");
-        return;
-      }
-    } else {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: values.email,
-        password: values.password
-      });
-
-      if (error) {
-        setError("root", { message: error.message });
-        return;
-      }
+      router.push("/dashboard");
+      router.refresh();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to reach authentication service. Check your connection and configuration.";
+      setError("root", { message });
     }
-
-    router.push("/dashboard");
-    router.refresh();
   });
 
   return (

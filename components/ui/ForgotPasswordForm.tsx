@@ -26,19 +26,24 @@ export function ForgotPasswordForm() {
   });
 
   const onSubmit = handleSubmit(async (values) => {
-    const supabase = createSupabaseBrowserClient();
-    setSentMessage(null);
+    try {
+      const supabase = createSupabaseBrowserClient();
+      setSentMessage(null);
 
-    const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
-      redirectTo: `${window.location.origin}/reset-password`
-    });
+      const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
+        redirectTo: `${window.location.origin}/reset-password`
+      });
 
-    if (error) {
-      setError("root", { message: error.message });
-      return;
+      if (error) {
+        setError("root", { message: error.message });
+        return;
+      }
+
+      setSentMessage("Reset link sent. Check your inbox for the password reset email.");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to reach authentication service. Check your connection and configuration.";
+      setError("root", { message });
     }
-
-    setSentMessage("Reset link sent. Check your inbox for the password reset email.");
   });
 
   return (

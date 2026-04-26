@@ -36,7 +36,14 @@ export function ResetPasswordForm() {
   });
 
   useEffect(() => {
-    const supabase = createSupabaseBrowserClient();
+    let supabase;
+    try {
+      supabase = createSupabaseBrowserClient();
+    } catch {
+      setHasRecoverySession(false);
+      return;
+    }
+
     let isMounted = true;
 
     const checkSession = async () => {
@@ -64,23 +71,28 @@ export function ResetPasswordForm() {
   }, []);
 
   const onSubmit = handleSubmit(async (values) => {
-    const supabase = createSupabaseBrowserClient();
-    setSuccessMessage(null);
+    try {
+      const supabase = createSupabaseBrowserClient();
+      setSuccessMessage(null);
 
-    const { error } = await supabase.auth.updateUser({
-      password: values.password
-    });
+      const { error } = await supabase.auth.updateUser({
+        password: values.password
+      });
 
-    if (error) {
-      setError("root", { message: error.message });
-      return;
+      if (error) {
+        setError("root", { message: error.message });
+        return;
+      }
+
+      setSuccessMessage("Password updated. Redirecting to login...");
+      setTimeout(() => {
+        router.push("/login");
+        router.refresh();
+      }, 1200);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Unable to reach authentication service. Check your connection and configuration.";
+      setError("root", { message });
     }
-
-    setSuccessMessage("Password updated. Redirecting to login...");
-    setTimeout(() => {
-      router.push("/login");
-      router.refresh();
-    }, 1200);
   });
 
   return (
