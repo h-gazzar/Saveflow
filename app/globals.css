@@ -130,12 +130,17 @@ select {
 }
 
 .reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-ready .reveal {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 600ms ease, transform 600ms ease;
 }
 
-.reveal.visible {
+.reveal-ready .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }

@@ -4,6 +4,8 @@ import { useEffect } from "react";
 
 export function RevealObserver() {
   useEffect(() => {
+    document.documentElement.classList.add("reveal-ready");
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
