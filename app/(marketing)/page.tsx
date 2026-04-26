@@ -54,24 +54,21 @@ export default function MarketingPage() {
         </nav>
       </NavBlur>
 
-      <section className="hero-grid relative overflow-hidden bg-[radial-gradient(circle_at_top,rgba(70,156,96,0.16),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.01)_34%,transparent_52%)] px-6 pb-20 pt-16">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[72%] bg-[radial-gradient(circle_at_28%_34%,rgba(255,255,255,0.09),transparent_34%)]" />
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-8 flex items-center gap-4 text-xs uppercase tracking-[0.25em] text-accent/90">
+      <section className="hero-grid relative overflow-hidden px-6 pb-20 pt-16">
+        <div className="mx-auto w-full">
+          <div className="mb-8 flex items-center justify-center gap-4 text-xs uppercase tracking-[0.25em] text-accent/90">
             <span className="h-px w-16 bg-accent" />
             Modern savings tracker
           </div>
-          <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="flex flex-col items-center gap-8 text-center">
             <div className="relative z-10">
-              <h1 className="max-w-5xl font-sans text-[clamp(3.8rem,9vw,8.3rem)] font-extrabold uppercase leading-[0.88] text-off-white [text-shadow:0_12px_48px_rgba(0,0,0,0.28)]">
+              <h1 className="mx-auto w-full max-w-none font-sans text-[clamp(3.8rem,9vw,8.3rem)] font-extrabold uppercase leading-[0.88] text-off-white">
                 Save with more <span className="font-serif italic normal-case text-accent">clarity</span>, spend with less noise
               </h1>
-              <p className="mt-8 max-w-2xl text-base leading-8 text-off-white/72">
+              <p className="mx-auto mt-8 w-full max-w-none text-base leading-8 text-off-white/72">
                 SaveFlow helps you track income, expenses, and savings goals in one clean workspace built for people who want momentum without heavy budgeting overhead.
               </p>
-            </div>
-            <div className="flex flex-col justify-between gap-8">
-              <div className="space-y-4 lg:ml-auto lg:max-w-sm">
+              <div className="mx-auto mt-8 w-full max-w-sm space-y-4">
                 <Link href="/signup" className="btn-primary w-full">
                   Create account
                   <ArrowRight className="h-4 w-4" />
@@ -80,8 +77,8 @@ export default function MarketingPage() {
                   Log in
                 </Link>
               </div>
-              <div className="self-center text-xs uppercase tracking-[0.25em] text-muted">Scroll to explore</div>
             </div>
+            <div className="text-xs uppercase tracking-[0.25em] text-muted">Scroll to explore</div>
           </div>
         </div>
       </section>
