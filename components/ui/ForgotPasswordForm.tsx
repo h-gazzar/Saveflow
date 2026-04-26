@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { BrandMark } from "~/components/ui/BrandMark";
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
 
 const schema = z.object({
@@ -49,9 +50,7 @@ export function ForgotPasswordForm() {
   return (
     <div className="surface-card w-full max-w-md p-8">
       <div className="mb-8 text-center">
-        <Link href="/" className="font-sans text-3xl font-extrabold uppercase tracking-[0.18em]">
-          save<span className="text-accent">flow</span>
-        </Link>
+        <BrandMark size="lg" className="mx-auto" />
         <h1 className="mt-6 font-sans text-3xl font-extrabold uppercase">Forgot password</h1>
         <p className="mt-3 text-sm text-muted">Enter your email and we will send you a reset link.</p>
         {sentMessage ? <p className="mt-4 text-sm text-accent">{sentMessage}</p> : null}

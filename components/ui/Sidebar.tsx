@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BarChart3, CircleDollarSign, LayoutDashboard, PiggyBank, Settings, Wallet } from "lucide-react";
 
+import { BrandMark } from "~/components/ui/BrandMark";
 import { cn } from "~/lib/utils";
 
 const items = [
@@ -21,16 +22,12 @@ export function Sidebar() {
     <>
       <div className="sticky top-0 z-30 border-b border-border bg-black/90 px-4 py-4 backdrop-blur md:px-5 lg:hidden">
         <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="font-sans text-xl font-extrabold uppercase tracking-[0.18em]">
-            save<span className="text-accent">flow</span>
-          </Link>
+          <BrandMark size="sm" />
           <span className="text-[0.65rem] uppercase tracking-[0.22em] text-muted">Money in motion</span>
         </div>
       </div>
       <aside className="fixed left-0 top-0 hidden h-screen w-[220px] flex-col border-r border-border bg-[#0d0d0d] px-5 py-6 lg:flex">
-        <Link href="/" className="font-sans text-2xl font-extrabold uppercase tracking-[0.18em]">
-          save<span className="text-accent">flow</span>
-        </Link>
+        <BrandMark />
         <p className="mt-3 text-sm leading-6 text-muted">Track spending, build momentum, and reach your next savings target with less friction.</p>
         <nav className="mt-10 space-y-2">
           {items.map(({ href, label, icon: Icon }) => {

@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { BrandMark } from "~/components/ui/BrandMark";
 import { LoadingSpinner } from "~/components/ui/LoadingSpinner";
 import { createSupabaseBrowserClient } from "~/lib/supabase-browser";
 import { currencyOptions, isSupportedCurrency } from "~/lib/saveflow";
@@ -82,9 +83,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   return (
     <div className="surface-card w-full max-w-md p-8">
       <div className="mb-8 text-center">
-        <Link href="/" className="font-sans text-3xl font-extrabold uppercase tracking-[0.18em]">
-          save<span className="text-accent">flow</span>
-        </Link>
+        <BrandMark size="lg" className="mx-auto" />
         <h1 className="mt-6 font-sans text-3xl font-extrabold uppercase">{mode === "login" ? "Log in" : "Create account"}</h1>
         <p className="mt-3 text-sm text-muted">
           {mode === "login" ? "Pick up where your saving plan left off." : "Start tracking spending and funding goals in one clean workspace."}

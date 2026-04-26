@@ -84,6 +84,96 @@ select {
   opacity: 1;
 }
 
+.brand-mark {
+  position: relative;
+  width: fit-content;
+}
+
+.brand-wordmark {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 0.86;
+}
+
+.brand-wordmark__save {
+  margin-left: 0.18em;
+  font-family: var(--font-dm-mono), monospace;
+  font-size: 0.46em;
+  font-weight: 800;
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+  color: rgba(245, 242, 236, 0.8);
+}
+
+.brand-wordmark__flowWrap {
+  position: relative;
+  display: inline-flex;
+  align-items: flex-end;
+}
+
+.brand-wordmark__flow {
+  font-family: var(--font-instrument-serif), serif;
+  font-size: 1.08em;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  text-transform: lowercase;
+  color: #8fd0a2;
+  text-shadow: 0 10px 22px rgba(70, 156, 96, 0.16);
+  transform: translateY(-0.02em);
+}
+
+.brand-wordmark__tail {
+  display: block;
+  width: 0.95em;
+  height: 0.14em;
+  margin-left: 0.08em;
+  margin-bottom: 0.18em;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(143, 208, 162, 0.9), rgba(143, 208, 162, 0));
+}
+
+.brand-wordmark--sm {
+  font-size: 1.45rem;
+}
+
+.brand-wordmark--md {
+  font-size: 1.9rem;
+}
+
+.brand-wordmark--lg {
+  font-size: 2.4rem;
+}
+
+.brand-wordmark--sm .brand-wordmark__save {
+  letter-spacing: 0.3em;
+}
+
+.brand-wordmark--lg .brand-wordmark__save {
+  font-size: 0.42em;
+}
+
+.brand-wordmark--sm .brand-wordmark__tail {
+  width: 0.82em;
+}
+
+.brand-wordmark--lg .brand-wordmark__tail {
+  width: 1.05em;
+}
+
+.brand-mark::after {
+  content: "";
+  position: absolute;
+  left: 0.28em;
+  right: 0.2em;
+  bottom: -0.18em;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), rgba(70, 156, 96, 0.46), rgba(70, 156, 96, 0));
+  opacity: 0.8;
+}
+
 .modal-card {
   position: relative;
   border: 1px solid var(--border);

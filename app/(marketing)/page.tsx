@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, BarChart3, CircleDollarSign, PiggyBank, Wallet } from "lucide-react";
 
+import { BrandMark } from "~/components/ui/BrandMark";
 import { HeroGridHover } from "~/components/ui/HeroGridHover";
 import { NavBlur } from "~/components/ui/NavBlur";
 
@@ -36,9 +37,7 @@ export default function MarketingPage() {
     <main>
       <NavBlur>
         <nav className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6 sm:py-5">
-          <Link href="/" className="font-sans text-xl font-extrabold uppercase tracking-[0.18em] sm:text-2xl">
-            save<span className="text-accent">flow</span>
-          </Link>
+          <BrandMark size="md" />
           <div className="hidden items-center gap-6 font-sans text-sm font-bold uppercase tracking-[0.15em] text-muted md:flex">
             <a href="#features">Features</a>
             <a href="#preview">Preview</a>
@@ -126,7 +125,7 @@ export default function MarketingPage() {
           </div>
           <div className="grid gap-0 lg:grid-cols-[220px_1fr]">
             <aside className="border-r border-border bg-[#141510] p-5">
-              <div className="font-sans text-xl font-extrabold uppercase">save<span className="text-accent">flow</span></div>
+              <BrandMark size="sm" />
               <div className="mt-8 space-y-3 text-sm text-muted">
                 <div className="rounded-sm border-r-2 border-accent bg-white/[0.03] px-3 py-3 text-off-white">Dashboard</div>
                 <div className="px-3 py-3">Goals</div>
@@ -212,9 +211,7 @@ export default function MarketingPage() {
 
       <footer className="border-t border-border px-4 py-8 sm:px-6">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 text-sm text-muted lg:flex-row lg:items-center lg:justify-between">
-          <Link href="/" className="font-sans text-2xl font-extrabold uppercase tracking-[0.18em] text-off-white">
-            save<span className="text-accent">flow</span>
-          </Link>
+          <BrandMark />
           <div className="flex gap-6 uppercase tracking-[0.18em]">
             <a href="#features">Features</a>
             <a href="#preview">Preview</a>
