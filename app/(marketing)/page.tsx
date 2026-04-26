@@ -54,7 +54,7 @@ export default function MarketingPage() {
         </nav>
       </NavBlur>
 
-      <section className="hero-grid relative overflow-hidden px-6 pb-20 pt-16">
+      <section className="hero-grid relative overflow-hidden bg-[radial-gradient(circle_at_top,rgba(70,156,96,0.12),transparent_42%),linear-gradient(180deg,rgba(255,255,255,0.02),transparent_38%)] px-6 pb-20 pt-16">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 flex items-center gap-4 text-xs uppercase tracking-[0.25em] text-accent">
             <span className="h-px w-16 bg-accent" />
@@ -125,7 +125,7 @@ export default function MarketingPage() {
             <div className="rounded-full border border-border px-4 py-2">app.saveflow.co/dashboard</div>
           </div>
           <div className="grid gap-0 lg:grid-cols-[220px_1fr]">
-            <aside className="border-r border-border bg-[#0d0d0d] p-5">
+            <aside className="border-r border-border bg-[#141510] p-5">
               <div className="font-sans text-xl font-extrabold uppercase">save<span className="text-accent">flow</span></div>
               <div className="mt-8 space-y-3 text-sm text-muted">
                 <div className="rounded-sm border-r-2 border-accent bg-white/[0.03] px-3 py-3 text-off-white">Dashboard</div>
