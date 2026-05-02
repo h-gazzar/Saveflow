@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export function RevealObserver() {
+  const pathname = usePathname();
+
   useEffect(() => {
     document.documentElement.classList.add("reveal-ready");
 
@@ -17,11 +20,16 @@ export function RevealObserver() {
       { threshold: 0.15 }
     );
 
-    const elements = document.querySelectorAll(".reveal");
-    elements.forEach((element) => observer.observe(element));
+    const frame = window.requestAnimationFrame(() => {
+      const elements = document.querySelectorAll(".reveal");
+      elements.forEach((element) => observer.observe(element));
+    });
 
-    return () => observer.disconnect();
-  }, []);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
+  }, [pathname]);
 
   return null;
 }
