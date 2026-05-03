@@ -23,10 +23,10 @@ SaveFlow is a production-quality MVP for tracking savings goals and daily cash f
 
 ## Local Setup
 
-1. Copy the environment file:
+1. Create a local environment file:
 
 ```bash
-cp .env.local.example .env.local
+touch .env.local
 ```
 
 2. Fill in:
